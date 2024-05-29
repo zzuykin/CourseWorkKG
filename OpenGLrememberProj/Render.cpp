@@ -230,9 +230,6 @@ void keyDownEvent(OpenGL *ogl, int key)
 	{
 		light.pos = camera.pos;
 	}
-	if (key == 'X') {
-		ChangeTexture();
-	}
 
 	if (key == ' ') {
 		FrogJump = true;
@@ -248,51 +245,6 @@ void keyUpEvent(OpenGL *ogl, int key)
 
 GLuint texId, texId2, texRoc, texSakura, texFrog;
 
-void ChangeTexture() {
-	static int count = 0;
-	//4 байта на хранение пикселя
-	glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-
-	//настройка режима наложения текстур
-	glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
-
-	//включаем текстуры
-	glEnable(GL_TEXTURE_2D);
-
-
-	//массив трехбайтных элементов  (R G B)
-	RGBTRIPLE* texarray;
-
-	//массив символов, (высота*ширина*4      4, потомучто   выше, мы указали использовать по 4 байта на пиксель текстуры - R G B A)
-	char* texCharArray;
-	int texW, texH;
-	if (count % 2 != 0){
-		OpenGL::LoadBMP("texture.bmp", &texW, &texH, &texarray);
-	}
-	else {
-		OpenGL::LoadBMP("assa.bmp", &texW, &texH, &texarray);
-	}
-	OpenGL::RGBtoChar(texarray, texW, texH, &texCharArray);
-	count++;
-
-	//генерируем ИД для текстуры
-	glGenTextures(1, &texId);
-	//биндим айдишник, все что будет происходить с текстурой, будте происходить по этому ИД
-	glBindTexture(GL_TEXTURE_2D, texId);
-
-	//загружаем текстуру в видеопямять, в оперативке нам больше  она не нужна
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, texW, texH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texCharArray);
-
-	//отчистка памяти
-	free(texCharArray);
-	free(texarray);
-
-	//наводим шмон
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-}
 
 
 ObjFile tree, frog;
@@ -1114,7 +1066,7 @@ void Render(OpenGL *ogl)
 	ss << "L - вкл/выкл освещение" << std::endl;
 	ss << "F - Свет из камеры" << std::endl;
 	ss << "G - двигать свет по горизонтали" << std::endl;
-	ss << "X - переключить текстуру" << std::endl;
+	ss << "Пробел - лягушка прыгнет" << std::endl;
 	ss << "G+ЛКМ двигать свет по вертекали" << std::endl;
 	ss << "Коорд. света: (" << light.pos.X() << ", " << light.pos.Y() << ", " << light.pos.Z() << ")" << std::endl;
 	ss << "Коорд. камеры: (" << camera.pos.X() << ", " << camera.pos.Y() << ", " << camera.pos.Z() << ")" << std::endl;
