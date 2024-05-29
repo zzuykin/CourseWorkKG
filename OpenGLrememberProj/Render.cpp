@@ -731,22 +731,20 @@ void DrawMountain(double height, double width, double width2) {
 void DrawPlatform() {
 	double height = 0.5;
 	double size = 10.0;
-
-	// Верхняя поверхность (разделенная на две части для наложения разных текстур)
-	glBindTexture(GL_TEXTURE_2D, texId); // Привязываем первую текстуру (голубая часть)
-	glColor3d(0.0, 0.0, 0.5); // Голубой цвет
+	glBindTexture(GL_TEXTURE_2D, texId); 
+	glColor3d(0.0, 0.0, 0.5); 
 	glBegin(GL_QUADS);
-	glNormal3d(0.0, 1.0, 0.0); // Нормаль направлена вверх
+	glNormal3d(0.0, 1.0, 0.0); 
 	glTexCoord2d(0, 0); glVertex3d(0, height, -size);
 	glTexCoord2d(1, 0); glVertex3d(size, height, -size);
 	glTexCoord2d(1, 1); glVertex3d(size, height, size);
 	glTexCoord2d(0, 1); glVertex3d(0, height, size);
 	glEnd();
 
-	glBindTexture(GL_TEXTURE_2D, texId2); // Привязываем вторую текстуру (зеленая часть)
-	glColor3d(0.0, 1.0, 0.0); // Зеленый цвет
+	glBindTexture(GL_TEXTURE_2D, texId2); 
+	glColor3d(0.0, 1.0, 0.0); 
 	glBegin(GL_QUADS);
-	glNormal3d(0.0, 1.0, 0.0); // Нормаль направлена вверх
+	glNormal3d(0.0, 1.0, 0.0);
 	glTexCoord2d(0, 0); glVertex3d(-size, height, -size);
 	glTexCoord2d(1, 0); glVertex3d(0, height, -size);
 	glTexCoord2d(1, 1); glVertex3d(0, height, size);
@@ -754,8 +752,8 @@ void DrawPlatform() {
 	glEnd();
 
 	// Нижняя поверхность
-	glBindTexture(GL_TEXTURE_2D, texId2); // Привязываем текстуру
-	glColor3d(0.5, 0.5, 0.5); // Серый цвет для нижней поверхности
+	glBindTexture(GL_TEXTURE_2D, texId2);
+	glColor3d(0.5, 0.5, 0.5); 
 	glBegin(GL_QUADS);
 	glNormal3d(0.0, -1.0, 0.0);
 	glTexCoord2d(0, 0); glVertex3d(-size, 0.0, -size);
@@ -765,7 +763,7 @@ void DrawPlatform() {
 	glEnd();
 
 	// Передняя грань
-	glBindTexture(GL_TEXTURE_2D, texId); // Привязываем текстуру
+	glBindTexture(GL_TEXTURE_2D, texId); 
 	glBegin(GL_QUADS);
 	glNormal3d(0.0, 0.0, -1.0);
 	glTexCoord2d(0, 0); glVertex3d(-size, 0.0, -size);
@@ -775,7 +773,7 @@ void DrawPlatform() {
 	glEnd();
 
 	// Задняя грань
-	glBindTexture(GL_TEXTURE_2D, texId); // Привязываем текстуру
+	glBindTexture(GL_TEXTURE_2D, texId); 
 	glBegin(GL_QUADS);
 	glNormal3d(0.0, 0.0, 1.0);
 	glTexCoord2d(0, 0); glVertex3d(-size, 0.0, size);
@@ -785,7 +783,7 @@ void DrawPlatform() {
 	glEnd();
 
 	// Левая грань
-	glBindTexture(GL_TEXTURE_2D, texId); // Привязываем текстуру
+	glBindTexture(GL_TEXTURE_2D, texId); 
 	glBegin(GL_QUADS);
 	glNormal3d(-1.0, 0.0, 0.0);
 	glTexCoord2d(0, 0); glVertex3d(-size, 0.0, -size);
@@ -795,7 +793,7 @@ void DrawPlatform() {
 	glEnd();
 
 	// Правая грань
-	glBindTexture(GL_TEXTURE_2D, texId); // Привязываем текстуру
+	glBindTexture(GL_TEXTURE_2D, texId); 
 	glBegin(GL_QUADS);
 	glNormal3d(1.0, 0.0, 0.0);
 	glTexCoord2d(0, 0); glVertex3d(size, 0.0, -size);
@@ -840,10 +838,8 @@ void Render(OpenGL *ogl)
 	static double t_max_next = 0;
 	static bool flag_tmax = true;
 
-	//настройка времени
 	double delta_time = Search_delta_time();
 	double go = delta_time / 5;
-	//t_max сама по себе изменяется от 0 до 1 постепенно от кадра к кадру
 		t_max -= go;
 		t_max_next = t_max - go;
 		if (t_max < 0) {
@@ -886,52 +882,29 @@ void Render(OpenGL *ogl)
 	//чтоб было красиво, без квадратиков (сглаживание освещения)
 	glShadeModel(GL_SMOOTH);
 	//==================================
-// Начальная точка водопада (внизу)
-	double b2P0[] = { -1.5, 0, 0.5 }; // Уровень земли
+//  водопад
+	double b2P0[] = { -1.5, 0, 0.5 };
+	double b2P1[] = { 2, 0, 0 };
+	double b2P2[] = { 3, 0, 5 };
+	double b2P3[] = { 4, 0,6 }; 
 
-	// Контрольная точка для начального подъема
-	double b2P1[] = { 2, 0, 0 }; // Немного вверх и назад
-
-	// Контрольная точка для среднего подъема
-	double b2P2[] = { 3, 0, 5 }; // Ещё выше и немного в сторону
-
-	// Конечная точка водопада (вверху)
-	double b2P3[] = { 4, 0,6 }; // Высоко вверх
-
-
-	double b1P0[] = { -1, 0, 0.6}; // Уровень земли
-
-	// Контрольная точка для начального подъема
-	double b1P1[] = { 2, 0, 0.4 }; // Немного вверх и назад
-
-	// Контрольная точка для среднего подъема
-	double b1P2[] = { 3, 0, 4 }; // Ещё выше и немного в сторону
-
-	// Конечная точка водопада (вверху)
-	double b1P3[] = { 4, 0,6 }; // Высоко вверх
+	double b1P0[] = { -1, 0, 0.6};
+	double b1P1[] = { 2, 0, 0.4 }; 
+	double b1P2[] = { 3, 0, 4 }; 
+	double b1P3[] = { 4, 0,6 }; 
 
 
-
+	//траектрия лягушки
 	double b3P0[] = { 1, -2, 0.5 }; 
-
 	double b3P1[] = { 1, 1, 2 }; 
-
 	double b3P2[] = { 1, 3, 3 }; 
-
 	double b3P3[] = { 1, 4,0.5 }; 
 
 
 	for (double i = 0; i < 1; i += 0.1) {
-		//b2P0[0] += i;
 		b1P0[1] += 0.2;
-
-		//b2P1[0] += i;
 		b1P1[1] += 0.2;
-
-		//b2P2[0] += i;
 		b1P2[1] += 0.2;
-
-		// b2P3[0] += i;
 		b1P3[1] += 0.2;
 
 		ActionBizie3(b1P0, b1P1, b1P2, b1P3, t_max);
@@ -939,22 +912,16 @@ void Render(OpenGL *ogl)
 
 
 	for (double i = 0; i < 1; i+=0.1) {
-		//b2P0[0] += i;
 		b2P0[1] += 0.2;
-
-		//b2P1[0] += i;
 		b2P1[1] += 0.2;
-
-		//b2P2[0] += i;
 		b2P2[1] += 0.2;
-
-		// b2P3[0] += i;
 		b2P3[1] += 0.2;
 
 		ActionBizie3(b2P0, b2P1, b2P2, b2P3, t_max);
 	}
 
 
+	//прыжок лягушки
 	if (FrogJump) {
 		if (!frog_statr) {
 			t_jump -= 0.1;
@@ -993,16 +960,14 @@ void Render(OpenGL *ogl)
 	}
 
 
-	
+	//платформа
 	glPushMatrix();
-
 	glRotated(90, 1, 0, 0);
 	glRotated(180, 0, 1, 0);
 	DrawPlatform();
 	glPopMatrix();
 
-
-
+	//гора
 	glPushMatrix();
 	glRotated(90, 0, 0, 1);
 	glTranslated(0.2, -7, 0);
@@ -1015,6 +980,8 @@ void Render(OpenGL *ogl)
 	DrawMountain(7, 2, 3);
 	glPopMatrix();
 
+
+	//деревья
 	glPushMatrix();
 	glBindTexture(GL_TEXTURE_2D, texSakura);
 	glTranslated(3, -5.5, 0.2);
@@ -1039,7 +1006,6 @@ void Render(OpenGL *ogl)
 
 	glPushMatrix();
 
-	
 	glPopMatrix();
 
 	glMatrixMode(GL_PROJECTION);	//Делаем активной матрицу проекций. 
